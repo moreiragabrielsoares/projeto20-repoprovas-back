@@ -38,6 +38,20 @@ describe('POST /signup', () => {
     });
 
 
+    it("given newUser with diferent passwords it should return 422", async () => {
+        
+        const body = {
+            email: 'test@email.com',  
+            password: '#a12345678',
+            confirmPassword: '#a99999999'
+        };
+
+        const result = await supertest(app).post("/signup").send(body);
+        
+        expect(result.status).toEqual(422);
+    });
+
+
     it("given newUser with duplicate email it should return 409", async () => {
         
         const body = {
