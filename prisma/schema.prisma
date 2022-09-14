@@ -1,0 +1,91 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Categories {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  tests     Tests[]
+
+  @@map("categories")
+}
+
+model Disciplines {
+  id                  Int                   @id @default(autoincrement())
+  name                String                @unique
+  termId              Int
+  createdAt           DateTime              @default(now()) @db.Timestamptz(6)
+  terms               Terms                 @relation(fields: [termId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  teachersDisciplines TeachersDisciplines[]
+
+  @@map("disciplines")
+}
+
+model Sessions {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  token     String   @unique
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  users     Users    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("sessions")
+}
+
+model Teachers {
+  id                  Int                   @id @default(autoincrement())
+  name                String                @unique
+  createdAt           DateTime              @default(now()) @db.Timestamptz(6)
+  teachersDisciplines TeachersDisciplines[]
+
+  @@map("teachers")
+}
+
+model TeachersDisciplines {
+  id           Int         @id @default(autoincrement())
+  teacherId    Int
+  disciplineId Int
+  disciplines  Disciplines @relation(fields: [disciplineId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  teachers     Teachers    @relation(fields: [teacherId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tests        Tests[]
+
+  @@unique([teacherId, disciplineId])
+  @@map("teachersDisciplines")
+}
+
+model Terms {
+  id          Int           @id @default(autoincrement())
+  number      Int           @unique
+  createdAt   DateTime      @default(now()) @db.Timestamptz(6)
+  disciplines Disciplines[]
+
+  @@map("terms")
+}
+
+model Tests {
+  id                  Int                 @id @default(autoincrement())
+  name                String
+  pdfUrl              String
+  categoryId          Int
+  teacherDisciplineId Int
+  createdAt           DateTime            @default(now()) @db.Timestamptz(6)
+  categories          Categories          @relation(fields: [categoryId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  teachersDisciplines TeachersDisciplines @relation(fields: [teacherDisciplineId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("tests")
+}
+
+model Users {
+  id        Int        @id @default(autoincrement())
+  email     String     @unique
+  password  String
+  createdAt DateTime   @default(now()) @db.Timestamptz(6)
+  sessions  Sessions[]
+
+  @@map("users")
+}
