@@ -14,6 +14,7 @@ describe('POST /signup', () => {
         const body = {
           email: 'test@email.com',  
           password: '#a12345678',
+          confirmPassword: '#a12345678'
         };
 
         const result = await supertest(app).post("/signup").send(body);
@@ -42,6 +43,7 @@ describe('POST /signup', () => {
         const body = {
             email: 'test@email.com',
             password: '#a12345678',
+            confirmPassword: '#a12345678'
         };
 
         const firstTry = await supertest(app).post("/signup").send(body);
