@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 
 import * as authService from '../services/authService';
-import { ICreateNewUserData, ILoginUserData } from '../types/authTypes';
+import { INewUserData, ILoginUserData } from '../types/authTypes';
 
 
 export async function signUpNewUser(req: Request, res: Response) {
 
-    const newUserData: ICreateNewUserData = req.body;
+    const newUserData: INewUserData = req.body;
 
     await authService.signUpNewUser(newUserData);
 

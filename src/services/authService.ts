@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { ICreateNewSession, ICreateNewUserData, ILoginUserData } from '../types/authTypes';
+import { ICreateNewSession, INewUserData, ILoginUserData, ICreateNewUserData } from '../types/authTypes';
 import * as authRepository from '../repositories/authRepository';
 import * as utilsFunctions from '../utils/functions';
 import * as jwtFunctions from '../utils/jwtToken';
@@ -8,15 +8,19 @@ import * as jwtFunctions from '../utils/jwtToken';
 dotenv.config();
 
 
-export async function signUpNewUser (newUserData: ICreateNewUserData) {
+export async function signUpNewUser (newUserData: INewUserData) {
+
+    if (newUserData.password !== newUserData.confirmPassword) {
+        throw {type: 'Unprocessable', message: 'Passwords do not match'};
+    }
     
     await checkDuplicateEmail(newUserData.email);
 
     const encryptedPassword = utilsFunctions.encryptDataWithBcrypt(newUserData.password);
 
-    newUserData.password = encryptedPassword;
+    const createNewUserData: ICreateNewUserData = {email: newUserData.email, password: encryptedPassword};
 
-    await authRepository.insertNewUser(newUserData);
+    await authRepository.insertNewUser(createNewUserData);
     
     return;
 }
