@@ -13,3 +13,10 @@ export async function createNewTest(req: Request, res: Response) {
 
     res.status(201).send('New test created');
 }
+
+export async function getAllTestsGroupedByDisciplines(req: Request, res: Response) {
+
+    const tests = await testService.getAllTestsGroupedByDisciplines();
+
+    res.status(200).send(tests);
+}

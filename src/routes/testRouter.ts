@@ -8,5 +8,6 @@ import * as testController from '../controllers/testController';
 const testRouter = Router();
 
 testRouter.post('/tests', validateUser, validateSchema(createNewTestSchema), testController.createNewTest);
-
+testRouter.get('/tests-disciplines', validateUser, testController.getAllTestsGroupedByDisciplines);
+    
 export default testRouter;
