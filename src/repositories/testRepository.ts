@@ -3,7 +3,6 @@ import prisma from '../database/database';
 import { ICreateNewTestData } from '../types/testTypes';
 
 
-
 export async function insertNewTest(newTestData: ICreateNewTestData) {
     
     await prisma.tests.create({
@@ -11,71 +10,10 @@ export async function insertNewTest(newTestData: ICreateNewTestData) {
     }); 
 }
 
-export async function getAllTests() {
 
-    const tests = await prisma.tests.findMany({});
+export async function getAllTestsGroupedByDisciplines() {
 
-    return tests;
-}
-
-
-export async function getAllDisciplinesGroupedByTerms() {
-
-    const disciplinesGroupedByTerms = await prisma.terms.findMany({
-        select: {
-            id: true,
-            number: true,
-            disciplines: {
-                select: {
-                    id: true,
-                    name: true,
-                    teachersDisciplines: {
-                        select: {
-                            id: true
-                        }
-                    }
-                }
-            }
-        }
-    });
-
-    return disciplinesGroupedByTerms;
-}
-
-
-export async function getTestsGroupedByCategoriesFilteredByTeachersDisciplineId(teacherDisciplineId: number) {
-
-    const testsGroupedByCategories = await prisma.categories.findMany({
-        select: {
-            id: true,
-            name: true,
-            tests: {
-                where: {
-                    teacherDisciplineId: teacherDisciplineId
-                },
-                select: {
-                    id: true,
-                    name: true,
-                    pdfUrl: true,
-                    categoryId: true,
-                    teacherDisciplineId: true,
-                }
-            }
-        }
-    });
-
-    return testsGroupedByCategories;
-}
-
-
-
-
-
-
-//-- SQL SOLUTION --
-export async function getAllTestsGroupedByDisciplinesSQL() {
-
-    const tests = await prisma.$queryRaw`
+    const testsGroupedByDisciplines = await prisma.$queryRaw`
         SELECT terms."id" as "termsId", 
             terms."number" as "term",
             (SELECT (JSON_AGG(ROW_TO_JSON(k)))
@@ -117,6 +55,44 @@ export async function getAllTestsGroupedByDisciplinesSQL() {
         ORDER BY terms."number" ASC;
     `
 
-    return tests;
+    return testsGroupedByDisciplines;
+}
+
+
+export async function getAllTestsGroupedByTeachers() {
+
+    const testsGroupedByTeachers = await prisma.$queryRaw`
+        SELECT teachers."id" as "teacherId", 
+            teachers."name" as "teacherName",
+            (SELECT (JSON_AGG(ROW_TO_JSON(k)))
+                FROM (
+                    SELECT c."id" as "categoryId", 
+                        c."name" as "categoryName",
+                        (SELECT (JSON_AGG(ROW_TO_JSON(w)))
+                            FROM (
+                                SELECT tests."id", 
+                                    tests."name", 
+                                    tests."pdfUrl",
+                                    d."name" as "discipline"
+                                FROM tests
+                                JOIN "teachersDisciplines" td ON td."id" = tests."teacherDisciplineId"
+                                JOIN "disciplines" d ON d."id" = td."disciplineId"
+                                WHERE tests."categoryId" = c."id"
+                                    AND td."teacherId" = teachers."id" 
+                            ) w) as "tests"
+                    FROM tests
+                    JOIN "teachersDisciplines" td ON td."id" = tests."teacherDisciplineId"
+                    JOIN "categories" c ON c."id" = tests."categoryId"
+                    WHERE tests."categoryId" = c."id"
+                    GROUP BY c."id", c."name"
+            ) k) as "categories"
+        FROM tests
+        JOIN "teachersDisciplines" td ON td."id" = tests."teacherDisciplineId"
+        JOIN "categories" c ON c."id" = tests."categoryId"
+        JOIN teachers ON teachers."id" = td."teacherId" 
+        GROUP BY teachers."id", teachers."name";
+    `
+
+    return testsGroupedByTeachers;
 }
 
