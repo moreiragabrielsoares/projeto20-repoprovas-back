@@ -1,0 +1,124 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "repoprovas",
+    "dateExported": "2022-09-19T18:47:25.193Z",
+    "version": "1.1",
+    "folders": [
+        {
+            "_id": "3a687351-8f3b-487e-8259-0cb42fb7115b",
+            "name": "auth",
+            "containerId": "",
+            "created": "2022-09-14T20:11:23.489Z",
+            "sortNum": 10000
+        },
+        {
+            "_id": "daf813f7-d3bb-4510-8acb-81d54296a948",
+            "name": "tests",
+            "containerId": "",
+            "created": "2022-09-14T21:58:40.069Z",
+            "sortNum": 20000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "99823d87-52e8-4f6f-a7a2-ff49c4b69c5f",
+            "colId": "ec91e8a5-ce29-4315-a417-28c52745b6f2",
+            "containerId": "3a687351-8f3b-487e-8259-0cb42fb7115b",
+            "name": "signup",
+            "url": "http://localhost:5000/signup",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2022-09-14T20:11:37.578Z",
+            "modified": "2022-09-19T18:16:56.231Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"test@email.com\",\n  \"password\": \"#a12345678\",\n  \"confirmPassword\": \"#a12345678\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "51ed7c79-1bf0-4498-a677-374104bb966d",
+            "colId": "ec91e8a5-ce29-4315-a417-28c52745b6f2",
+            "containerId": "3a687351-8f3b-487e-8259-0cb42fb7115b",
+            "name": "login",
+            "url": "http://localhost:5000/login",
+            "method": "POST",
+            "sortNum": 15000,
+            "created": "2022-09-14T20:12:49.871Z",
+            "modified": "2022-09-19T18:46:59.772Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"test@email.com\",\n  \"password\": \"#a12345678\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "dcd05f10-4a61-4357-ba7e-21de556ab244",
+            "colId": "ec91e8a5-ce29-4315-a417-28c52745b6f2",
+            "containerId": "daf813f7-d3bb-4510-8acb-81d54296a948",
+            "name": "create",
+            "url": "http://localhost:5000/tests",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2022-09-14T21:58:58.111Z",
+            "modified": "2022-09-19T18:40:19.923Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY2MzYxMjc5MiwiZXhwIjoxNjYzNjk5MTkyfQ.GYDYAG0sGaz6BHDZaQ-ygkJXJxyeog-iDb3IzgM04nE"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"name\",\n  \"pdfUrl\": \"https://test.pdf\",\n  \"categoryId\": 1,\n  \"teacherDisciplineId\": 1\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "fe9377ec-b0df-4f18-95ab-dee32b87b77e",
+            "colId": "ec91e8a5-ce29-4315-a417-28c52745b6f2",
+            "containerId": "daf813f7-d3bb-4510-8acb-81d54296a948",
+            "name": "getTestsGroupedByDisciplines",
+            "url": "http://localhost:5000/tests-disciplines",
+            "method": "GET",
+            "sortNum": 50000,
+            "created": "2022-09-14T23:44:52.511Z",
+            "modified": "2022-09-19T18:40:02.654Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY2MzYxMjc5MiwiZXhwIjoxNjYzNjk5MTkyfQ.GYDYAG0sGaz6BHDZaQ-ygkJXJxyeog-iDb3IzgM04nE"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "facc8fcd-1238-491e-8295-bf6244fe8831",
+            "colId": "ec91e8a5-ce29-4315-a417-28c52745b6f2",
+            "containerId": "daf813f7-d3bb-4510-8acb-81d54296a948",
+            "name": "getTestsGroupedByTeachers",
+            "url": "http://localhost:5000/tests-teachers",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2022-09-15T22:46:11.354Z",
+            "modified": "2022-09-19T18:40:09.809Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY2MzYxMjc5MiwiZXhwIjoxNjYzNjk5MTkyfQ.GYDYAG0sGaz6BHDZaQ-ygkJXJxyeog-iDb3IzgM04nE"
+                }
+            ],
+            "params": [],
+            "tests": []
+        }
+    ]
+}
